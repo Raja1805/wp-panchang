@@ -52,11 +52,13 @@ const DEFAULT_LOCATION_TZ = 'Asia/Kolkata';
  * @return string Rendered HTML.
  */
 function pk_panchang_shortcode( $atts ) {
+    $ip = $_SERVER['REMOTE_ADDR'];
+$details = json_decode(file_get_contents("http://ipinfo.io/{$ip}/json"));
     extract(shortcode_atts(array(
-        'location' => DEFAULT_LOCATION,
-        'coordinates' => DEFAULT_LOCATION_COORDINATES,
-        'tz' => DEFAULT_LOCATION_TZ,
-    ), $type));
+        'location' => $details->city,
+        'coordinates' => $details->loc,
+        'tz' => $details->timezone,
+    ), ''));
 
     $tz = new DateTimeZone( $tz );
 
